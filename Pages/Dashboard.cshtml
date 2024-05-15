@@ -1,0 +1,29 @@
+﻿@page
+@model DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="display-4 mt-5">E-Book Dashboard</h1>
+            <p class="lead">Select an option below:</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-3">
+            <a href="/Orders/OrdersDashboard" class="btn btn-primary btn-lg btn-block">Manage Orders</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/Books" class="btn btn-primary btn-lg btn-block">Manage Books</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/Customers" class="btn btn-primary btn-lg btn-block">Manage Customers</a>
+        </div>
+        <div class="col-md-3">
+            <a href="/GenerateReport" class="btn btn-primary btn-lg btn-block">Generate Report</a>
+        </div>
+    </div>
+</div>
