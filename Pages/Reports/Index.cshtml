@@ -1,0 +1,81 @@
+﻿@page
+@model e_book_pvt.Pages.Reports.IndexModel
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Delivered Orders</h2>
+    <div class="row">
+        @foreach (var order in Model.DeliveredOrders)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@($"{order.FirstName} {order.LastName}")</h5>
+                        <p class="card-text">Total Price: @order.TotalPrice</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="mb-4">Undelivered Orders</h2>
+    <div class="row">
+        @foreach (var order in Model.UndeliveredOrders)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@($"{order.FirstName} {order.LastName}")</h5>
+                        <p class="card-text">Total Price: @order.TotalPrice</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="mb-4">Low Rated Books</h2>
+    <div class="row">
+        @foreach (var book in Model.LowRatedBooks)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Name</h5>
+                        <p class="card-text">Rating: @book.Rating</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="mb-4">High Rated Books</h2>
+    <div class="row">
+        @foreach (var book in Model.HighRatedBooks)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Name</h5>
+                        <p class="card-text">Rating: @book.Rating</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="container mt-5">
+    <h2 class="mb-4">Reports</h2>
+    <div class="d-flex flex-column">
+        <a class="btn btn-primary mb-3" asp-page="/Reports/DeliveredOrders">View Delivered Orders</a>
+        <a class="btn btn-primary mb-3" asp-page="/Reports/UndeliveredOrders">View Undelivered Orders</a>
+        <a class="btn btn-primary mb-3" asp-page="/Reports/LowRatedBooks">View Low Rated Books</a>
+        <a class="btn btn-primary mb-3" asp-page="/Reports/HighRatedBooks">View High Rated Books</a>
+    </div>
+</div>
+
+</div>
+
+
+

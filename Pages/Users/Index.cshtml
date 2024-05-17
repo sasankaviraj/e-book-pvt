@@ -1,0 +1,36 @@
+﻿@page
+@model e_book_pvt.Pages.Users.IndexModel
+@{
+        ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.UserDetail)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                <form method="post">
+                    <input type="hidden" name="id" value="@user.Id" asp-for="@user.Id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+            </td>
+            </tr>
+        }
+    </tbody>
+</table>

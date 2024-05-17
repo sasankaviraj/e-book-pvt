@@ -11,5 +11,6 @@
         public double TotalPrice { get; set; }
         public DateTime OrderDate { get; set; }
         public string UserID { get; set; }
+        public bool? IsDelivered { get; set; }
     }
 }

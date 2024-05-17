@@ -1,0 +1,82 @@
+﻿@page
+@model e_book_pvt.Pages.Books.ReviewModel
+@{
+    ViewData["Title"] = "Review";
+}
+
+<div class="container">
+    <h2>Review Book: @Model.BookName</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Display Book Details -->
+            <h3>Book Details:</h3>
+            <img src="@Model.BookImageUrl" class="card-img-top" alt="Book Image">
+            <p>Author: @Model.BookAuthor</p>
+            <p>Price: $@Model.BookPrice</p>
+            <!-- Add more details as needed -->
+
+            <!-- Rating Form -->
+            <form method="post">
+                <div class="form-group">
+                    <label for="Rating">Rating:</label>
+                    <!-- Star Rating Input -->
+                    <select asp-for="Rating" class="form-control" id="Rating" name="Rating" required>
+                        <option value="">Select Rating</option>
+                        <option value="1">★</option>
+                        <option value="2">★★</option>
+                        <option value="3">★★★</option>
+                        <option value="4">★★★★</option>
+                        <option value="5">★★★★★</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Comment">Review Comment:</label>
+                    <textarea asp-for="Comment" class="form-control" id="Comment" name="Comment" rows="4"></textarea>
+                </div>
+                <input type="hidden" asp-for="BookId" />
+                <input type="hidden" asp-for="BookName" value="@Model.BookName" />
+                <input type="hidden" asp-for="BookAuthor" value="@Model.BookAuthor" />
+                <input type="hidden" asp-for="BookImageUrl" value="@Model.BookImageUrl" />
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Display Previous Reviews -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>Previous Reviews:</h3>
+            @if (Model.PreviousReviews != null && Model.PreviousReviews.Any())
+            {
+                foreach (var review in Model.PreviousReviews)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p>Rating: @Stars(review.Rating)</p>
+                            <p>Comment: @review.Comment</p>
+                            <p>User: @review.UserEmail</p>
+                            <!-- Display other review details as needed -->
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No reviews available for this book.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@functions {
+    // Function to convert rating to stars
+    public string Stars(int rating)
+    {
+        string stars = "";
+        for (int i = 0; i < rating; i++)
+        {
+            stars += "★";
+        }
+        return stars;
+    }
+}

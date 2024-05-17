@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using e_book_pvt.Data;
+using e_book_pvt.Pages.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
-
+builder.Services.AddScoped<ReportService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

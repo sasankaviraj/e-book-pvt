@@ -21,5 +21,6 @@ namespace e_book_pvt.Data
         public DbSet<e_book_pvt.Models.Book>? Book { get; set; }
         public DbSet<e_book_pvt.Models.Cart>? Cart { get; set; }
         public DbSet<e_book_pvt.Models.OrderDetail>? Order { get; set; }
+        public DbSet<e_book_pvt.Models.Review>? Review { get; set; }
     }
 }

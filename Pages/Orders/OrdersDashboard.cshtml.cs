@@ -24,7 +24,7 @@ namespace e_book_pvt.Pages.Orders
                 IList<OrderDetailModel> OrderDetailModels = new List<OrderDetailModel>();
                 foreach (var order in OrderDetails)
                 {
-                    List<OrderItem> items = JsonConvert.DeserializeObject<List<OrderItem>>(order.Items);
+                    List<Item> items = JsonConvert.DeserializeObject<List<Item>>(order.Items);
                     OrderDetailModel orderDetailModel = new OrderDetailModel
                     {
                         ID = order.ID,
@@ -34,6 +34,7 @@ namespace e_book_pvt.Pages.Orders
                         ContactNo = order.ContactNo,
                         TotalPrice = order.TotalPrice,
                         OrderDate = order.OrderDate,
+                        IsDelivered = order.IsDelivered,
                         Items = items
                     };
                     OrderDetailModels.Add(orderDetailModel);

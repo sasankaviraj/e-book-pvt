@@ -1,0 +1,98 @@
+﻿@page
+@model e_book_pvt.Pages.Reports.HighRatedBooksModel
+@{
+    ViewData["Title"] = "High Rated Books";
+}
+
+<h2 class="mb-4">High Rated Books</h2>
+
+<div class="text-center mb-4">
+    <button onclick="exportToCsv()" class="btn btn-success mr-2">Download CSV</button>
+    <button onclick="exportToPdf()" class="btn btn-danger">Download PDF</button>
+</div>
+
+<div class="container mt-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Rating</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.HighRatedBooks)
+            {
+                <tr>
+                    <td>@book.ID</td>
+                    <td>@book.Name</td>
+                    <td>@book.Author</td>
+                    <td>@book.Price.ToString("C")</td> <!-- Format as currency -->
+                    <td>@book.Rating.ToString()</td>
+                    <td>
+                        <img src="@book.ImageUrl" alt="@book.Name" style="height: 100px; width: auto;" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script>
+        function exportToCsv() {
+            const table = document.querySelector('.table');
+            const rows = table.querySelectorAll('tr');
+            let csvContent = "data:text/csv;charset=utf-8,";
+            rows.forEach(row => {
+                const rowData = [];
+                const cols = row.querySelectorAll('td');
+                cols.forEach(col => {
+                    rowData.push(col.innerText.trim());
+                });
+                csvContent += rowData.join(",") + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "high_rated_books.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+
+        function exportToPdf() {
+            const table = document.querySelector('.table');
+            const pdfDoc = pdfMake.createPdf({
+                content: [
+                    {
+                        table: {
+                            headerRows: 1,
+                            body: getTableData(table)
+                        }
+                    }
+                ]
+            });
+            pdfDoc.download('high_rated_books.pdf');
+        }
+
+        function getTableData(table) {
+            const data = [];
+            const rows = table.querySelectorAll('tr');
+            rows.forEach((row) => {
+                const rowData = [];
+                const cols = row.querySelectorAll('td, th');
+                cols.forEach((col) => {
+                    rowData.push(col.innerText.trim());
+                });
+                data.push(rowData);
+            });
+            return data;
+        }
+    </script>
+}

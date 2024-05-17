@@ -47,7 +47,6 @@ namespace e_book_pvt.Pages.Orders
             {
                 return Page();
             }
-
             _context.Attach(OrderDetail).State = EntityState.Modified;
 
             try
@@ -66,7 +65,7 @@ namespace e_book_pvt.Pages.Orders
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./OrdersDashboard");
         }
 
         private bool OrderDetailExists(int id)

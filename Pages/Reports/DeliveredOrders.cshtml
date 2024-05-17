@@ -1,0 +1,109 @@
+﻿@page
+@model e_book_pvt.Pages.Reports.DeliveredOrdersModel
+@{
+    ViewData["Title"] = "Delivered Orders";
+}
+
+<h2 class="mb-4">Delivered Orders</h2>
+
+<div class="text-center mb-4">
+    <button onclick="exportToCsv()" class="btn btn-success mr-2">Download CSV</button>
+    <button onclick="exportToPdf()" class="btn btn-danger">Download PDF</button>
+</div>
+
+<div class="container mt-5">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Address</th>
+                <th>Contact No</th>
+                <th>Items</th>
+                <th>Total Price</th>
+                <th>Order Date</th>
+                <th>User ID</th>
+                <th>Is Delivered</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.DeliveredOrders)
+            {
+                <tr>
+                    <td>@order.FirstName</td>
+                    <td>@order.LastName</td>
+                    <td>@order.Address</td>
+                    <td>@order.ContactNo</td>
+                    <td>
+                        <ul>
+                            @foreach (var item in order.Items)
+                            {
+                                <li>@($"{item.Name} - ${item.Price}")</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>@order.TotalPrice</td>
+                    <td>@order.OrderDate.ToString("MM/dd/yyyy")</td>
+                    <td>@order.UserID</td>
+                    <td>@order.IsDelivered?.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.2/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script>
+        function exportToCsv() {
+            const table = document.querySelector('.table');
+            const rows = table.querySelectorAll('tr');
+            let csvContent = "data:text/csv;charset=utf-8,";
+            rows.forEach(row => {
+                const rowData = [];
+                const cols = row.querySelectorAll('td');
+                cols.forEach(col => {
+                    rowData.push(col.innerText.trim());
+                });
+                csvContent += rowData.join(",") + "\n";
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "delivered_orders.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+
+        function exportToPdf() {
+            const table = document.querySelector('.table');
+            const pdfDoc = pdfMake.createPdf({
+                content: [
+                    {
+                        table: {
+                            headerRows: 1,
+                            body: getTableData(table)
+                        }
+                    }
+                ]
+            });
+            pdfDoc.download('delivered_orders.pdf');
+        }
+
+        function getTableData(table) {
+            const data = [];
+            const rows = table.querySelectorAll('tr');
+            rows.forEach((row) => {
+                const rowData = [];
+                const cols = row.querySelectorAll('td, th');
+                cols.forEach((col) => {
+                    rowData.push(col.innerText.trim());
+                });
+                data.push(rowData);
+            });
+            return data;
+        }
+    </script>
+}

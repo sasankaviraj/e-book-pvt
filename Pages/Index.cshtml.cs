@@ -30,6 +30,27 @@ namespace e_book_pvt.Pages
             if (_context.Book != null)
             {
                 Book = await _context.Book.ToListAsync();
+
+                // Iterate through each book to fetch and calculate the average rating
+                foreach (var book in Book)
+                {
+                    // Fetch reviews related to the current book
+                    var reviews = await _context.Review.Where(r => r.BookID == book.ID).ToListAsync();
+
+                    // Calculate the average rating
+                    if (reviews.Any())
+                    {
+                        // Calculate the average rating based on all reviews
+                        double averageRating = reviews.Select(r => r.Rating).Average();
+                        // Round the average rating to the nearest integer
+                        book.Rating = (int)Math.Round(averageRating);
+                    }
+                    else
+                    {
+                        // If no reviews found, set the rating to 0
+                        book.Rating = 0;
+                    }
+                }
             }
         }
         

@@ -5,25 +5,86 @@
 }
 
 <div class="container">
-    <div class="row">
+    <!-- Search Form -->
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search books..." id="searchInput">
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4" id="bookContainer">
         @if (Model.Book != null)
         {
             foreach (var item in Model.Book)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="Book Image">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">@item.Author</p>
-                            <p class="card-text">$@item.Price</p>
-                            <form method="post" asp-page-handler="AddToCart" asp-route-id="@item.ID">
-                                <button type="submit" class="btn btn-primary">Add to Cart</button>
-                            </form>
+                <div class="col mb-4">
+                    <a href="/Books/Review?id=@item.ID" class="card-link">
+                        <div class="card h-100">
+                            <img src="@item.ImageUrl" class="card-img-top" alt="Book Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Author</p>
+                                <!-- Display Rating as Stars -->
+                                <p class="card-text">Rating: @Stars(item.Rating)</p>
+                                <p class="card-text">$@item.Price</p>
+                                <form method="post" asp-page-handler="AddToCart" asp-route-id="@item.ID">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             }
         }
     </div>
 </div>
+
+@functions {
+    // Function to convert rating to stars
+    public string Stars(int? rating)
+    {
+        if (rating.HasValue)
+        {
+            string stars = "";
+            for (int i = 0; i < rating.Value; i++)
+            {
+                stars += "★";
+            }
+            return stars;
+        }
+        else
+        {
+            // If rating is null, return an empty string or handle it as you prefer
+            return "";
+        }
+    }
+}
+
+@section Scripts {
+    <script>
+        // Get the search input element
+        const searchInput = document.getElementById('searchInput');
+        
+        // Add event listener for keyup event
+        searchInput.addEventListener('keyup', function() {
+            // Get the search query value
+            const query = searchInput.value.trim().toLowerCase();
+            
+            // Get all book cards
+            const bookCards = document.querySelectorAll('.card');
+            
+            // Iterate through each book card
+            bookCards.forEach(card => {
+                // Get the title of the book from card
+                const title = card.querySelector('.card-title').textContent.trim().toLowerCase();
+                
+                // Check if the title contains the search query
+                if (title.includes(query)) {
+                    // If it matches, display the card
+                    card.parentElement.style.display = '';
+                } else {
+                    // If it doesn't match, hide the card
+                    card.parentElement.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}

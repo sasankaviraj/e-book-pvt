@@ -7,5 +7,6 @@
         public string Author { get; set; }
         public Double Price { get; set; }
         public string ImageUrl { get; set; }
+        public Int32? Rating { get; set; }
     }
 }
